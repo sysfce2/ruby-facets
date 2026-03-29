@@ -33,6 +33,10 @@ Changes:
   * Rewrite `Kernel#callstack`, `#require_all`, `#load_all` to use `caller_locations`
     instead of parsing caller strings with regex.
   * Switch CI from Travis to GitHub Actions.
+  * Make `String#underscore` ActiveSupport-compatible (converts `::` to `/`).
+    Use `String#snakecase` for pure case conversion without namespace handling.
+  * Make `Kernel#try` ActiveSupport-compatible (supports block form and `try!`).
+    Facets' Tee/Functor form retained as extra feature.
 
 * Bug Fixes
 

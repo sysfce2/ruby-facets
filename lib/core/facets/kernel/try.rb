@@ -3,38 +3,36 @@ require 'facets/functor'
 module Kernel
 
   # Invokes the method identified by the symbol +method+, passing it any
-  # arguments  and/or the block specified, just like the regular Ruby
-  # <tt>Object#send</tt> does.
+  # arguments and/or the block specified.
   #
-  # *Unlike* that method however, a +NoMethodError+ exception will *not*
-  # be raised and +nil+ will be returned instead, if the receiving object
-  # is a +nil+ object or NilClass.
+  # Unlike regular send, a +NoMethodError+ exception will *not* be raised
+  # if the receiving object is +nil+ (see NilClass#try below).
   #
-  # For example, without try
+  # Compatible with ActiveSupport's #try, plus an additional Tee/Functor
+  # form when called with no arguments and no block.
   #
-  #   @example = Struct.new(:name).new("bob")
-  #
-  #   @example && @example.name
-  #
-  # or:
-  #
-  #   @example ? @example.name : nil
-  #
-  # But with try
-  #
-  #   @example.try(:name)  #=> "bob"
-  #
-  # or
-  #
-  #   @example.try.name    #=> "bob"
-  #
-  # It also accepts arguments and a block, for the method it is trying:
-  #
-  #   @people.try(:collect){ |p| p.name }
+  #   @example.try(:name)              #=> "bob"
+  #   @example.try { |o| o.name }     #=> "bob"  (ActiveSupport block form)
+  #   @example.try.name               #=> "bob"  (Facets Tee form)
   #
   def try(method=nil, *args, &block)
     if method
       __send__(method, *args, &block)
+    elsif block_given?
+      yield self
+    else
+      self
+    end
+  end
+
+  # Like #try, but raises NoMethodError if the method doesn't exist
+  # (unless receiver is nil). Compatible with ActiveSupport's #try!.
+  #
+  def try!(method=nil, *args, &block)
+    if method
+      public_send(method, *args, &block)
+    elsif block_given?
+      yield self
     else
       self
     end
@@ -46,13 +44,25 @@ end
 class NilClass
 
   # See Kernel#try.
-  def try(method=nil, *args)
+  def try(method=nil, *args, &block)
     if method
       nil
+    elsif block_given?
+      nil
     else
-      Functor.new{ nil }
+      Tee.new { nil }
+    end
+  end
+
+  # See Kernel#try!.
+  def try!(method=nil, *args, &block)
+    if method
+      nil
+    elsif block_given?
+      nil
+    else
+      Tee.new { nil }
     end
   end
 
 end
-
