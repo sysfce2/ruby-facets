@@ -10,12 +10,10 @@ class OpenStruct
   #
   def merge!(other)
     raise TypeError, "can't modify frozen #{self.class}", caller(1) if self.frozen?
-    ##other = other.to_hash #to_h?
-    for k,v in other
-      @table[k.to_sym] = v
+    other.each_pair do |k, v|
+      self[k.to_sym] = v
     end
     self
   end
 
 end
-
