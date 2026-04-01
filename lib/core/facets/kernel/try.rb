@@ -8,12 +8,12 @@ module Kernel
   # Unlike regular send, a +NoMethodError+ exception will *not* be raised
   # if the receiving object is +nil+ (see NilClass#try below).
   #
-  # Compatible with ActiveSupport's #try, plus an additional Tee/Functor
+  # Compatible with ActiveSupport's #try, plus an additional Functor
   # form when called with no arguments and no block.
   #
   #   @example.try(:name)              #=> "bob"
   #   @example.try { |o| o.name }     #=> "bob"  (ActiveSupport block form)
-  #   @example.try.name               #=> "bob"  (Facets Tee form)
+  #   @example.try.name               #=> "bob"  (Facets Functor form)
   #
   def try(method=nil, *args, &block)
     if method
@@ -50,7 +50,7 @@ class NilClass
     elsif block_given?
       nil
     else
-      Tee.new { nil }
+      Functor.new { nil }
     end
   end
 
@@ -61,7 +61,7 @@ class NilClass
     elsif block_given?
       nil
     else
-      Tee.new { nil }
+      Functor.new { nil }
     end
   end
 
