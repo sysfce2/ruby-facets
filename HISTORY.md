@@ -132,6 +132,8 @@ Changes:
   * Deprecate `continuation.rb` (callcc is obsolete; use Fiber).
   * Deprecate `getoptlong.rb` (bundled gem heading for removal; use OptionParser).
   * Deprecate `load_monitor.rb` (monkey-patches require/load globally).
+  * Clean up `random.rb`: remove Array#shuffle/shuffle! (Ruby built-in),
+    add Array#sample! (destructive sample), deprecate at_rand/pick (use sample).
   * Drop unused `test_files` directive from gemspec. (PR#301)
 
 
