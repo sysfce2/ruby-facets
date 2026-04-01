@@ -2,26 +2,25 @@ require 'cgi'
 
 class CGI
 
-  # Extends `#escape_html` to support escape modes. By default all strings
-  # are escaped on `&`, `>` and `<`. Add the `:nonstandard` mode to omit
-  # this conversion.
+  # Extended HTML/XHTML escaping with mode support. Unlike Ruby's built-in
+  # `CGI.escape_html`, this supports additional escape modes.
   #
-  # If no mode is given then the `:default` mode is used.
-  #
-  # Available modes include:
+  # Available modes:
   # * `:quote`     - escapes single and double quotes
   # * `:newlines`  - escapes newline characters (\r and \n)
   # * `:ampersand` - escapes the ampersand sign
   # * `:brackets`  - escapes less-than and greater-than signs
   # * `:default`   - escapes double quotes
   #
-  # @example
-  #   escape_html("<tag>")  #=> "&lt;tag&gt;"
-  #   escape_html("Example\nString", :newlines)  #=> "Example&#13;&#10;String"
-  #   escape_html("\"QUOTE\"", false)  #=> "\"QUOTE\""
+  # By default all strings are escaped on `&`, `>`, `<` and `"`.
   #
-  def self.escape_html(string, *modes)
-    modes << :defualt if modes.empty?
+  # @example
+  #   CGI.escape_xhtml("<tag>")  #=> "&lt;tag&gt;"
+  #   CGI.escape_xhtml("Example\nString", :newlines)  #=> "Example&#13;&#10;String"
+  #   CGI.escape_xhtml("\"QUOTE\"", false)  #=> "\"QUOTE\""
+  #
+  def self.escape_xhtml(string, *modes)
+    modes << :default if modes.empty?
 
     unless modes.include?(:nonstandard)
       string = string.gsub(/&/, '&amp;').gsub(/>/, '&gt;').gsub(/</, '&lt;')
@@ -32,7 +31,7 @@ class CGI
         case mode
         when :quote, :quotes
           string.gsub(%r|"|,'&quot;').gsub(%r|'|,'&#39;')
-        when :newlines, :newlines
+        when :newlines
           string.gsub(/[\r\n]+/,'&#13;&#10;')
         when :ampersand
           string.gsub(/&/, '&amp;')
@@ -41,23 +40,13 @@ class CGI
         when :default, true
           string.gsub(/\"/, '&quot;')
         when false
+          string
         else
-          raise ArgumentError, "unrecognized HTML escape mode -- #{node}"
+          raise ArgumentError, "unrecognized HTML escape mode -- #{mode}"
         end
     end
-  end
 
-  class << self
-    # @deprecated
-    alias :escapeHTML :escape_html
-  end
-
-  if RUBY_VERSION < '1.9'
-    class << self
-      alias :unescape_html :unescapeHTML
-      alias :escape_element :escapeElement
-      alias :unescape_element :unescapeElement
-    end
+    string
   end
 
 end
