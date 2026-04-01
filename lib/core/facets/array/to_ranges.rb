@@ -2,12 +2,13 @@ class Array
 
   # Produces an array of ranges from the values in the array.
   # Contiguous values and overlapping ranges are merged.
+  # Single values are returned as single-element ranges (e.g. 1..1).
   #
   # Examples
   #
   #     [1,2,3,6,7,8].to_ranges  #=> [1..3, 6..8]
   #
-  #     [3,4,5,1,6,9,8].to_ranges  #=> [1..6, 8..9]
+  #     [3,4,5,1,6,9,8].to_ranges  #=> [1..1, 3..6, 8..9]
   #
   #     [10..15, 16..20, 21, 22].to_ranges  #=> [10..22]
   #
@@ -20,7 +21,7 @@ class Array
 
   def to_ranges
     array = compact.uniq.sort_by { |e| Range === e ? e.first : e }
-    array.inject([]) do |c, value|
+    result = array.inject([]) do |c, value|
       unless c.empty?
         last = c.last
         last_value    = (Range === last  ? last.last   : last)
@@ -37,6 +38,8 @@ class Array
         c << value
       end
     end
+    # Ensure all elements are ranges
+    result.map { |e| Range === e ? e : e..e }
   end
 
   alias arrange to_ranges
