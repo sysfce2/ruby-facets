@@ -137,6 +137,7 @@ Changes:
   * Fix Pathname#glob to wrap Ruby's built-in, adding symbol flag support.
   * Remove Pathname#empty? (built into Ruby).
   * Deprecate Pathname.null (use Pathname.new(File::NULL)).
+  * Fix `Math.kldivergence` (was broken — referenced `self` instead of array parameter).
   * Drop unused `test_files` directive from gemspec. (PR#301)
 
 
