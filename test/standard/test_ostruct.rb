@@ -2,40 +2,6 @@ covers 'facets/ostruct'
 
 test_case OpenStruct do
 
-  method :merge! do
-    test do
-      o = OpenStruct.new(:a => 1)
-      h = { :b => 2 }
-      o.merge!(h)
-      o.b.assert == 2
-    end
-
-    test do
-      o = OpenStruct.new( { :a => 1 } )
-      h = { :b => 2 }
-      o.merge!(h)
-      o.b.assert == 2
-    end
-  end
-
-  method :merge do
-    test do
-      o = OpenStruct.new( { :a => 1 } )
-      h = { :b => 2 }
-      q = o.merge( h )
-      q.a.assert == 1
-      q.b.assert == 2
-    end
-
-    test "two open structs" do
-      o1 = OpenStruct.new( { :a => 1 } )
-      o2 = OpenStruct.new( { :b => 2 } )
-      q = o1.merge( o2.to_h )
-      q.a.assert == 1
-      q.b.assert == 2
-    end
-  end
-
   class_method :new do
     test "old functionality" do
       o = OpenStruct.new

@@ -52,7 +52,8 @@ class Hash
     each_pair do |k,v|
       h[k] = v.to_ostruct_recurse( exclude ) if v.respond_to?(:to_ostruct_recurse)
     end
-    o.merge!(h)
+    h.each_pair { |k, v| o[k.to_sym] = v }
+    o
   end
 end
 
