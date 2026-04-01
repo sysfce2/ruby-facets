@@ -17,7 +17,7 @@ Changes:
   * Add `Binding#caller_locations`.
   * Add `Range.intersection` and `Range#intersection` for finding the shared
     region of multiple ranges. Works with any comparable type.
-  * Add `Kernel#tee` — block-less method chaining via Functor, replaces `tap` override.
+  * Add `Kernel#functor` — block-less method chaining via Functor, replaces `tap` override.
   * Rename `Hash#to_proc` to `Hash#setter` (avoids clash with Ruby 2.3's `Hash#to_proc`
     which does key lookup; Facets' version does attribute assignment).
   * Consolidate `Array#arrange` and `Array#to_ranges`; `to_ranges` is now primary,

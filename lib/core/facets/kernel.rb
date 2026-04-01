@@ -56,6 +56,7 @@ require_relative 'kernel/returning.rb'
 require_relative 'kernel/silence.rb'
 require_relative 'kernel/silence_warnings.rb'
 require_relative 'kernel/super_method.rb'
+require_relative 'kernel/functor.rb'
 require_relative 'kernel/tap.rb'
 require_relative 'kernel/temporarily.rb'
 #require_relative 'kernel/trap_chain.rb'        # uncommon
