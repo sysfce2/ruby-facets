@@ -40,13 +40,13 @@ class Hash
 
     if block
       hash = dup.clear
-      if block.arity.abs == 1
+      if block.arity == 2
         each_pair do |k, v|
-          hash[block[k]] = v     #hash[block[k] || k] = v
+          hash[block[k,v]] = v
         end
       else
         each_pair do |k, v|
-          hash[block[k,v]] = v   #hash[block[k,v] || k] = v
+          hash[block[k]] = v
         end
       end
     else

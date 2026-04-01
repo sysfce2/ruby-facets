@@ -21,13 +21,13 @@ class Hash
 
     if block
       hash = dup.clear  # to keep default_proc
-      if block.arity.abs == 1
+      if block.arity == 2
         each_pair do |k, v|
-          hash[k] = block[v]     #hash[k] = block[v] || v
+          hash[k] = block[k,v]
         end
       else
         each_pair do |k, v|
-          hash[k] = block[k,v]   #hash[k] = block[k,v] || v
+          hash[k] = block[v]
         end
       end
     else
