@@ -124,6 +124,14 @@ Changes:
   * Update `Kernel#meta_class` to delegate to `singleton_class` internally.
   * Fix dead requires for removed `kernel/singleton_class` in Proc and Kernel.
   * Remove misplaced `applique/file_helpers` from core (test infrastructure).
+  * Remove OpenStruct extensions now built into Ruby (`to_h`, `each`, `[]`, `[]=`).
+  * Fix OpenStruct#initialize to not use removed `new_ostruct_member`.
+  * Add OpenStruct#merge (non-destructive version).
+  * Remove deprecated OpenStruct methods (`instance_delegate`, `ostruct_update`, etc.).
+  * Deprecate `cloneable.rb` (use `deep_dup`/`deep_clone` instead).
+  * Deprecate `continuation.rb` (callcc is obsolete; use Fiber).
+  * Deprecate `getoptlong.rb` (bundled gem heading for removal; use OptionParser).
+  * Deprecate `load_monitor.rb` (monkey-patches require/load globally).
   * Drop unused `test_files` directive from gemspec. (PR#301)
 
 
