@@ -1,10 +1,2 @@
-class Pathname
-
-  # Is a directory path empty?
-  #
-  # Returns [Boolean]
-  def empty?
-    Dir.glob(::File.join(to_s, '*')).empty?
-  end
-
-end
+# Pathname#empty? is now built into Ruby.
+# This file is kept for backward compatibility but does nothing.

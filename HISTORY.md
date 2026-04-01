@@ -134,6 +134,9 @@ Changes:
   * Deprecate `load_monitor.rb` (monkey-patches require/load globally).
   * Clean up `random.rb`: remove Array#shuffle/shuffle! (Ruby built-in),
     add Array#sample! (destructive sample), deprecate at_rand/pick (use sample).
+  * Fix Pathname#glob to wrap Ruby's built-in, adding symbol flag support.
+  * Remove Pathname#empty? (built into Ruby).
+  * Deprecate Pathname.null (use Pathname.new(File::NULL)).
   * Drop unused `test_files` directive from gemspec. (PR#301)
 
 

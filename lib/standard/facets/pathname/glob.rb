@@ -1,16 +1,26 @@
 class Pathname
 
-  # Glob pathnames.
+  # Extends Ruby's built-in Pathname#glob to accept symbol-based
+  # flags in addition to the standard File::FNM_* constants.
+  #
+  #   Pathname.new('/tmp').glob('*', :dotmatch)
+  #
+  # Supported symbols: :noescape, :pathname, :dotmatch, :casefold
+  #
+  alias_method :_glob_original, :glob
+  private :_glob_original
+
   def glob(match, *opts)
-    flags = glob_flags(opts)
-    Dir.glob(::File.join(self.to_s, match), flags).collect{ |m| self.class.new(m) }
+    if opts.any? { |o| o.is_a?(Symbol) || o.is_a?(String) }
+      flags = glob_flags(opts)
+      Dir.glob(::File.join(self.to_s, match), flags).map { |m| self.class.new(m) }
+    else
+      _glob_original(match, *opts)
+    end
   end
 
   # Return the first glob match.
   #
-  # DEPRECATE: While slightly faster then glob().first, not really worth it
-  # unless this can be rewritten to shortcut on first match (using fnmatch?).
-  # In wich case, is there a better name for this method?
   def glob_first(match, *opts)
     flags = glob_flags(opts)
     file = ::Dir.glob(::File.join(self.to_s, match), flags).first
@@ -28,15 +38,12 @@ class Pathname
   # Does a directory contain a matching entry?
   # Or if the pathname is a file, same as #fnmatch.
   #
-  # TODO: Move to own file? Better name?
-  #
   # Returns [Pathname]
-
-  def include?(pattern,*opts)
+  def include?(pattern, *opts)
     if directory?
-      glob_first(pattern,*opts)
+      glob_first(pattern, *opts)
     else
-      fnmatch(pattern,*opts)
+      fnmatch(pattern, *opts)
     end
   end
 
