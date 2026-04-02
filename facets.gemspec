@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
 
   s.authors     = ['Thomas Sawyer']
   s.email       = ['transfire@gmail.com']
-  s.homepage    = 'https://github.com/rubyworks/facets'
+  s.homepage    = 'https://rubyworks.github.io/facets'
   s.license     = 'BSD-2-Clause'
 
   s.required_ruby_version = '>= 3.1'
@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib/core', 'lib/standard']
 
   s.metadata = {
-    'homepage_uri'    => s.homepage,
     'source_code_uri' => 'https://github.com/rubyworks/facets',
     'changelog_uri'   => 'https://github.com/rubyworks/facets/blob/main/HISTORY.md'
   }
