@@ -9,7 +9,8 @@ Changes:
 
 * New Features
 
-  * Add `Array#to_proc` for chaining method calls via array. (PR#233)
+  * Add `Crypt3` module — pure Ruby crypt(3) implementation (from rubyworks/crypt3).
+    Supports md5, sha1, sha256, sha384, sha512, rmd160.
   * Add `Array#to_ranges` to convert arrays to ranges. (PR#265)
   * Add `Array#remove` and `Array#remove!` for count-respecting subtraction. (PR#293)
   * Add `Array#indexes` / `Array#index_all` to find all matching indexes. (PR#294)
