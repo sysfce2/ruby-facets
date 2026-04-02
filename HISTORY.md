@@ -1,6 +1,6 @@
 # Facets Release History
 
-## 3.2.0 / (Unreleased)
+## 3.2.0 / 2026-04-01
 
 Modernization release targeting Ruby 3.1+. Cleans up long-standing
 compatibility issues and incorporates community contributions.
