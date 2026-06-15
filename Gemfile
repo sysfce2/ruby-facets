@@ -6,6 +6,7 @@ group :test do
   gem 'rubytest-cli'
   gem 'rake'
   gem 'simplecov'
+  gem 'ostruct'  # no longer a default gem as of Ruby 3.5; needed by facets/ostruct tests
 end
 
 group :guard do

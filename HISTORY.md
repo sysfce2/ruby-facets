@@ -1,5 +1,28 @@
 # Facets Release History
 
+## 3.2.2 / 2026-06-15
+
+Patch release with cross-version fixes surfaced by CI on Ruby 3.1–3.4.
+
+Changes:
+
+* Bug Fixes
+
+  * Fix `Range.intersection` on Ruby 3.1 and 3.2. It relied on `Range#overlap?`,
+    which only exists in Ruby 3.3+; replaced with an explicit overlap test that
+    works on any Ruby and any comparable element type.
+  * Restore `Range#overlap?` for Ruby < 3.3. It was dropped in 3.2.0 (since Ruby
+    3.3 added a native one), which left 3.1/3.2 users without it. It is now
+    defined only when missing, so it never replaces the built-in on 3.3+.
+
+* Internal
+
+  * Add `ostruct` to the test dependencies. `ostruct` is deprecated in Ruby 3.4
+    and removed from the default gems in Ruby 3.5, so it must be declared
+    explicitly. Facets' OpenStruct extensions (`require 'facets/ostruct'`) still
+    work, but now require the `ostruct` gem to be installed on Ruby 3.5+. These
+    extensions may be divested from Facets in a future release.
+
 ## 3.2.1 / 2026-06-14
 
 Patch release that fixes the broken 3.2.0 release. 3.2.0 shipped with stale
