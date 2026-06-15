@@ -43,7 +43,7 @@ require_relative 'array/split.rb'
 require_relative 'array/squeeze.rb'
 require_relative 'array/store.rb'
 require_relative 'array/thru.rb'
-require_relative 'array/to_h.rb'
+#require_relative 'array/to_h.rb'  # removed: now provided by Ruby
 require_relative 'array/traverse.rb'
 require_relative 'array/uniq_by.rb'
 

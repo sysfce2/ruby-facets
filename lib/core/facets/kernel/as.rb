@@ -99,8 +99,8 @@ class As #:nodoc:
     private :cache
   end
 
-  # Privatize all methods except #binding an operators.
-  private(*instance_methods.select { |m| m !~ /(^__|^\W|^binding$)/ })
+  # Privatize all methods except #binding, #object_id and operators.
+  private(*instance_methods.select { |m| m !~ /(^__|^\W|^binding$|^object_id$)/ })
 
   def initialize(subject, ancestor)
     @subject = subject

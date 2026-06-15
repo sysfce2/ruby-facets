@@ -1,5 +1,37 @@
 # Facets Release History
 
+## 3.2.1 / 2026-06-14
+
+Patch release that fixes the broken 3.2.0 release. 3.2.0 shipped with stale
+`require_relative` lines pointing at method files that had been removed or
+renamed, so `require 'facets'` raised `LoadError`. This restores loadability
+and adds a regression guard so it cannot recur. (The breaking-change and
+versioning concern raised in issue #314 is left for a future major release.)
+
+Changes:
+
+* New Features
+
+  * Add `OpenDSL` — build free-form, pluggable DSL modules from a block.
+  * Add `PIC` — COBOL-style edited-picture pattern matching as a simple
+    alternative to regular expressions.
+
+* Bug Fixes
+
+  * Fix `LoadError` on `require 'facets'`: remove stale `require_relative`
+    lines left pointing at removed method files, and correct the
+    `hash/to_proc` -> `hash/setter` require after the rename.
+    (issues #312, #315; PR#313)
+  * Fix `range.rb` requiring the removed `range/overlap`. (PR#318)
+  * Stop `Kernel::As` from redefining `object_id`, which emitted a
+    "redefining 'object_id' may cause serious problems" warning on load.
+    (issue #310)
+
+* Internal
+
+  * Add a load-path regression test that verifies every `require_relative`
+    target across the library resolves to an existing file.
+
 ## 3.2.0 / 2026-04-01
 
 Modernization release targeting Ruby 3.1+. Cleans up long-standing
