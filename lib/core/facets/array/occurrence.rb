@@ -11,6 +11,10 @@ class Array
   #   [2,2,3,4,4,4].occurrence{|i| i % 2}
   #   #=> { 0 => 5, 1 => 1 }
   #
+  # Without a block, this is equivalent to Ruby's #tally.
+  # With a block, the block transforms the key before counting,
+  # which #tally does not support.
+  #
   def occurrence
     h = Hash.new(0)
     if block_given?
@@ -26,4 +30,3 @@ class Array
   end
 
 end
-

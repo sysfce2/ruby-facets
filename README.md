@@ -1,13 +1,15 @@
 # Ruby Facets
 
-[![Gem Version](https://badge.fury.io/rb/facets.svg)](http://badge.fury.io/rb/facets)
+[![Gem Version](https://badge.fury.io/rb/facets.svg)](https://rubygems.org/gems/facets)
+[![CI](https://github.com/rubyworks/facets/actions/workflows/ci.yml/badge.svg)](https://github.com/rubyworks/facets/actions/workflows/ci.yml)
+
 
 *"ALL YOUR BASE ARE BELONG TO RUBY"*
 
 
 ## Introduction
 
-Ruby Facets is the premiere collection of general purpose method
+Ruby Facets is the premier collection of general purpose method
 extensions and standard additions for the Ruby programming language.
 
 Facets houses the largest single collection of methods available for
@@ -25,11 +27,10 @@ to a wide variety of usecases.
 
 ## Resources
 
-* Homepage: http://rubyworks.github.com/facets
-* Report Bugs: http://github.com/rubyworks/facets/issues
-* Mailing List: http://groups.google.com/group/facets-universal/topics
-* Wiki Pages: http://wiki.github.com/rubyworks/facets
-* Source Code: http://github.com/rubyworks/facets
+* Homepage: https://rubyworks.github.io/facets
+* Report Bugs: https://github.com/rubyworks/facets/issues
+* Wiki Pages: https://github.com/rubyworks/facets/wiki
+* Source Code: https://github.com/rubyworks/facets
 
 
 ## Documentation
@@ -42,7 +43,7 @@ it is important to remain aware of the source location of particular
 methods.
 
 For better organized online documentation, generated to separate core
-extensions from standard libraries, see the [Learn Facets](http://rubyworks.github.com/facets/learn.html) page on the website for links to available documentation.
+extensions from standard libraries, see the [Learn Facets](https://rubyworks.github.io/facets/learn.html) page on the website for links to available documentation.
 
 
 ## Installation
@@ -61,16 +62,9 @@ The easiest way to install is via RubyGems.
 
     $ gem install facets
 
-### Setup.rb
+### Requirements
 
-Facets can be installed the old-fashioned way using [Setup.rb](http://rubyworks.github.com/setup).
-Download and unpack the .tar.gz package and run setup.rb, like so:
-
-    $ tar -xvzf facets-2.x.x.tar.gz
-    $ cd facets-2.x.x
-    $ sudo setup.rb
-
-Facets 2.8+ requires Ruby 1.8.7 or higher. Facets 3.0+ requires Ruby 2.0.0 or higher.
+Facets 3.2+ requires Ruby 3.1 or higher.
 
 
 ## Mission
@@ -201,18 +195,13 @@ welcome. We want Ruby Facets to be of the highest quality.
 
 ## Development
 
-Facets uses the [Lemon](http://rubyworks.github.com/lemon) testing framework
-to handle unit testing, while [QED](http://rubyworks.github.com/qed) specifications
-provide tested documentation.
+Facets uses the [Lemon](https://rubyworks.github.io/lemon) testing framework
+to handle unit testing, while [QED](https://rubyworks.github.io/qed) specifications
+provide tested documentation. Run the test suite with [Rake](https://ruby.github.io/rake/):
 
-Facets uses [Detroit](http://detroit.github.com) and [Rulebow](http://rubyworks.github.com/rulebow)
-build tools. Detroit is a life-cycle tool and Rulebow is a continuous integration tool. These
-tools, via the `Assembly` and `Rulebook` scripts respectively, sometimes use other tools such
-as [Mast](http://rubyworks.github.com/mast) and [Indexer](http://rubyworks.github.com/indexer).
-In addition we support [Rake](https://ruby.github.io/rake/) and [Guard](http://guardgem.org/)
-build tools, which most developers are familiar with.
-Note, that while these build tools can be easy circumvented, the Mast and Indexer tools are
-necessary to prepare Facets for release.
+    $ rake test
+
+Continuous integration runs on GitHub Actions (see `.github/workflows/ci.yml`).
 
 
 ## Authors
@@ -260,5 +249,5 @@ code under such license, with appropriate credit citations.
 
 Ruby Facets, Copyright (c) 2005 Rubyworks
 
-Do you Ruby? (http://ruby-lang.org)
+Do you Ruby? (https://ruby-lang.org)
 

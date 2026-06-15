@@ -1,5 +1,3 @@
-require 'facets/class/subclasses'
-
 class Class
 
   # List all descedents of this class.

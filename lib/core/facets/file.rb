@@ -11,6 +11,6 @@ require_relative 'file/rootname.rb'
 require_relative 'file/sanitize.rb'
 require_relative 'file/split_all.rb'
 require_relative 'file/split_root.rb'
-require_relative 'file/write.rb'
+#require_relative 'file/write.rb'  # removed: now provided by Ruby
 require_relative 'file/writelines.rb'
 

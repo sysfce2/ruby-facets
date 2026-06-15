@@ -9,11 +9,11 @@ class String
   #   "Snake Case".snakecase        #=> "snake_case"
   #   "Snake  -  Case".snakecase    #=> "snake_case"
   #
-  # Note, this method no longer converts `::` to `/`, in that case
-  # use the {#pathize} method instead.
+  # Note, unlike #underscore this does not convert `::` to `/`.
+  # Use {#pathize} for that, or use {#underscore} for ActiveSupport
+  # compatible behavior.
 
   def snakecase
-    #gsub(/::/, '/').
     gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
     gsub(/([a-z\d])([A-Z])/,'\1_\2').
     tr('-', '_').
@@ -22,10 +22,17 @@ class String
     downcase
   end
 
+  # Like #snakecase but also converts '::' to '/' for
+  # namespace-to-path conversion. This is compatible with
+  # ActiveSupport's #underscore.
   #
-  alias_method :underscore, :snakecase
+  #   "SnakeCase".underscore        #=> "snake_case"
+  #   "Foo::Bar".underscore         #=> "foo/bar"
+  #
+  def underscore
+    gsub(/::/, '/').snakecase
+  end
 
   # TODO: Add *separators to #snakecase, like camelcase.
 
 end
-

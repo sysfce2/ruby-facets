@@ -1,20 +1,9 @@
 class Pathname
 
-  # Platform dependent null device.
-  #
-  # CREDIT: Daniel Burger
-
+  # @deprecated Use Pathname.new(File::NULL) instead.
   def self.null
-    case RUBY_PLATFORM
-    when /mswin/i
-      'NUL'
-    when /amiga/i
-      'NIL:'
-    when /openvms/i
-      'NL:'
-    else
-      '/dev/null'
-    end
+    warn "Pathname.null is deprecated. Use Pathname.new(File::NULL) instead.", uplevel: 1
+    new(File::NULL)
   end
 
 end

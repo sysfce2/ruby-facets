@@ -16,7 +16,7 @@ require_relative 'kernel/false'
 require_relative 'kernel/true'
 
 ### Object
-require_relative 'object/itself'
+#require_relative 'object/itself'  # removed: now provided by Ruby
 
 ### Array
 require_relative 'array/delete_values'
@@ -37,11 +37,11 @@ require_relative 'enumerable/graph'
 require_relative 'enumerable/value_by'
 
 ### File
-require_relative 'file/write'
+#require_relative 'file/write'  # removed: now provided by Ruby
 
 ### Hash
 require_relative 'hash/autonew'
-require_relative 'hash/compact'
+#require_relative 'hash/compact'  # removed: now provided by Ruby
 #require_relative 'hash/data'
 require_relative 'hash/delete_values'
 require_relative 'hash/except'

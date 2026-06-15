@@ -1,5 +1,182 @@
 # Facets Release History
 
+## 3.2.1 / 2026-06-14
+
+Patch release that fixes the broken 3.2.0 release. 3.2.0 shipped with stale
+`require_relative` lines pointing at method files that had been removed or
+renamed, so `require 'facets'` raised `LoadError`. This restores loadability
+and adds a regression guard so it cannot recur. (The breaking-change and
+versioning concern raised in issue #314 is left for a future major release.)
+
+Changes:
+
+* New Features
+
+  * Add `OpenDSL` — build free-form, pluggable DSL modules from a block.
+  * Add `PIC` — COBOL-style edited-picture pattern matching as a simple
+    alternative to regular expressions.
+
+* Bug Fixes
+
+  * Fix `LoadError` on `require 'facets'`: remove stale `require_relative`
+    lines left pointing at removed method files, and correct the
+    `hash/to_proc` -> `hash/setter` require after the rename.
+    (issues #312, #315; PR#313)
+  * Fix `range.rb` requiring the removed `range/overlap`. (PR#318)
+  * Stop `Kernel::As` from redefining `object_id`, which emitted a
+    "redefining 'object_id' may cause serious problems" warning on load.
+    (issue #310)
+
+* Internal
+
+  * Add a load-path regression test that verifies every `require_relative`
+    target across the library resolves to an existing file.
+
+## 3.2.0 / 2026-04-01
+
+Modernization release targeting Ruby 3.1+. Cleans up long-standing
+compatibility issues and incorporates community contributions.
+
+Changes:
+
+* New Features
+
+  * Add `Crypt3` module — pure Ruby crypt(3) implementation (from rubyworks/crypt3).
+    Supports md5, sha1, sha256, sha384, sha512, rmd160.
+  * Add `Array#to_ranges` to convert arrays to ranges. (PR#265)
+  * Add `Array#remove` and `Array#remove!` for count-respecting subtraction. (PR#293)
+  * Add `Array#indexes` / `Array#index_all` to find all matching indexes. (PR#294)
+  * Add `String#dashcase` for kebab-case conversion. (PR#297)
+  * Add `Binding#caller_locations`.
+  * Add `Range.intersection` and `Range#intersection` for finding the shared
+    region of multiple ranges. Works with any comparable type.
+  * Add `Kernel#functor` — block-less method chaining via Functor, replaces `tap` override.
+  * Stop overriding `Hash#to_proc` and provide its behavior as `Hash#setter`
+    instead. Facets' version built a Proc that assigns the hash's key/value
+    pairs as attributes on a target object, which conflicted with Ruby's own
+    `Hash#to_proc` (added in 2.3, does key lookup). Facets now cedes `to_proc`
+    to Ruby; use `Hash#setter` for the attribute-assignment behavior. Also
+    renamed the option `response:` to `safe:` and fixed a receiver check.
+  * Consolidate `Array#arrange` and `Array#to_ranges`; `to_ranges` is now primary,
+    `arrange` and `rangify` are aliases. Now handles mixed ranges and values.
+  * Fix `Array#step` to start at index 0 (was n-1); add optional offset parameter.
+
+* Improved Features
+
+  * Adapt `Module#attr_setter` to frozen-string-literal. (PR#287)
+  * Update `Binding#__LINE__` and `__FILE__` to use `source_location`.
+  * Replace `URI.escape`/`URI.unescape` with `CGI.escape`/`CGI.unescape`.
+  * Rewrite `Kernel#callstack`, `#require_all`, `#load_all` to use `caller_locations`
+    instead of parsing caller strings with regex.
+  * Switch CI from Travis to GitHub Actions.
+  * Make `String#underscore` ActiveSupport-compatible (converts `::` to `/`).
+    Use `String#snakecase` for pure case conversion without namespace handling.
+  * Make `Kernel#try` ActiveSupport-compatible (supports block form and `try!`).
+    Facets' Tee/Functor form retained as extra feature.
+
+* Bug Fixes
+
+  * Fix `Math.gini_coefficient` referencing `self` instead of `array` parameter. (PR#302)
+  * Fix typo in `Array#after` doc. (PR#283)
+  * Fix typo in `String#to_b` doc. (PR#306)
+
+* Removals
+
+  * Remove `Array#**` (`op_pow`) alias for `product` (use `Array#product` directly).
+  * Deprecate `Array#occurrence` (use `Enumerable#tally` instead, adopted by Ruby in 2.7).
+  * Deprecate `Array#uniq_by!` (use `Array#uniq!(&block)` instead, adopted by Ruby in 1.9.2).
+  * Deprecate `Array#nonuniq` / `nonuniq!` (use `Array#duplicates` / `duplicates!` instead).
+  * Add `Array#duplicates!` (in-place version of `duplicates`).
+  * Remove `Kernel#tap` override. Use `Kernel#tee` for the block-less Functor form.
+  * Remove `Enumerable#filter` (conflicts with Ruby's built-in `filter` since 2.6).
+    Use `each_with_object` instead, with block arguments reversed:
+    `collection.each_with_object([]) { |el, out| out << el if cond }`.
+  * Remove Ruby 1.8 compatibility code from `enumerator.rb`.
+  * Remove `taint`/`tainted?` references (removed from Ruby in 3.2).
+  * Remove `Enumerable#sum` (adopted by Ruby in 2.4).
+    For non-numeric cases (e.g. `[[1],[2],[3]]`), use `reduce(:+)` instead.
+  * Remove `String#crypt` override (Ruby deprecated `crypt` in 3.2; use `bcrypt` gem instead).
+  * Remove `MatchData#match` (adopted by Ruby in 3.1).
+  * Remove `Range#overlap?` (adopted by Ruby in 3.3).
+  * Remove `Kernel#__DIR__` (adopted by Ruby as `__dir__` in 2.0).
+  * Remove `Kernel#instance_exec` (adopted by Ruby in 1.9).
+  * Remove `Kernel#singleton_class` (adopted by Ruby in 1.9).
+  * Remove `Kernel#p` override (Ruby's `p` returns its arguments since 1.9).
+  * Remove `Method#curry` (adopted by Ruby in 2.2).
+  * Remove `Array#to_h` (adopted by Ruby in 2.1).
+  * Remove `Array#intersection` (clashes with Ruby 2.7's `Array#intersection`).
+    Consider `Range.intersection` class method as future replacement.
+  * Remove `Hash#except` (adopted by Ruby in 3.0); `except!` and `remove!` retained.
+  * Remove `Hash#slice` (adopted by Ruby in 2.5); `slice!` retained.
+    Block form removed from both; use `slice(...).select { ... }` instead.
+  * Remove `Class#singleton_class?` (adopted by Ruby in 3.2).
+  * Remove `Class#subclasses` (adopted by Ruby in 3.1).
+  * Remove `Symbol#succ` (adopted by Ruby in 1.9).
+  * Remove `File.write` (adopted by Ruby in 1.9).
+  * Remove `Process.daemon` (adopted by Ruby in 1.9).
+  * Remove `Dir#each_child` (adopted by Ruby in 2.6).
+    Note: Ruby's version does not support the custom ignore argument.
+    Use `Dir.each_child('/path').reject { |f| ignore.include?(f) }` instead.
+  * Remove `Numeric#positive?` and `Numeric#negative?` (adopted by Ruby in 2.3).
+  * Remove `Object#itself` (adopted by Ruby in 2.6).
+  * Deprecate `Array#standard_deviation` (use `Array#stddev` or `Array#sd`).
+  * Deprecate `Struct#attributes` (use `Struct#to_h`, adopted by Ruby in 2.0).
+  * Deprecate `UnboundMethod#arguments` (use `UnboundMethod#parameters`, adopted by Ruby in 2.0).
+  * Remove `Object#dup!` and `Object#try_dup` (plain `dup` works on all objects since Ruby 2.4).
+  * Remove `Exception#set_message` (broken — did not actually change the message).
+  * Deprecate `Exception#error_print` (use `Exception#full_message`, adopted by Ruby in 2.5).
+  * Deprecate `Comparable#clip` (use `Comparable#clamp`, adopted by Ruby in 2.4).
+  * Redefine `Comparable#bound` as alias for `clamp`.
+  * Add `Dir.find` as convenience wrapper around Ruby's `Find.find`.
+  * Deprecate `Dir.recurse` / `Dir.ls_r` (use `Dir.find` or `Find.find` instead).
+  * Deprecate `Proc#compose` and `Proc#*` (use `Proc#<<` for right-to-left composition, Ruby 2.6+).
+  * Deprecate `Hash#update_keys` (use `Hash#transform_keys!` or `Hash#rekey!`).
+  * Deprecate `Hash#update_values` (use `Hash#transform_values!` or `Hash#revalue!`).
+  * Deprecate `Hash#fetch_nested` (use `Hash#dig`, adopted by Ruby in 2.3).
+  * Deprecate `Enumerable#compact_map` (use `Enumerable#filter_map`, adopted by Ruby in 2.7).
+  * Deprecate `Enumerable#defer` (use `Enumerable#lazy`, adopted by Ruby in 2.0).
+  * Deprecate `Enumerable#frequency` (use `Enumerable#tally`, adopted by Ruby in 2.7).
+  * Deprecate `Enumerable#hinge` (use `Enumerable#each_with_object`, note: block args reversed).
+  * Deprecate `Enumerable#map_with_index` (use `Enumerable#map.with_index`).
+  * Deprecate `Enumerable#mash` (use `Enumerable#graph` instead).
+  * Deprecate `Enumerable#uniq_by` (use `Enumerable#uniq(&block)`, Ruby 1.9.2+).
+  * Redefine `String#lchomp` / `#lchomp!` as aliases for `delete_prefix` / `delete_prefix!`.
+  * Rename `Time#trunc` to `Time#floor_to` (parallels `Time#round_to`; avoids confusion
+    with Ruby's `Time#floor` which takes sub-second digit precision). `trunc` deprecated.
+  * Fix `Binding#[]` and `#[]=` to use `local_variable_get`/`local_variable_set`
+    (broken since Ruby 1.9; now works again).
+  * Deprecate `Binding#self` (use `Binding#receiver`, adopted by Ruby in 2.6).
+  * Deprecate `Module#alias_method_chain` (use `Module#prepend`, Ruby 2.0+).
+  * Deprecate `Module#can` (use `Module#extend`).
+  * Deprecate `File.null` (use `File::NULL` constant, Ruby 1.9.3+).
+  * Deprecate `File.read_binary` (use `File.binread`, Ruby 1.9.3+).
+  * Deprecate `Kernel#eigenclass` (use `singleton_class` or `meta_class`; kept in tribute to _why).
+  * Deprecate `Kernel#extension`, `#instance_class`, `#qua_class`, `#object_class`
+    (use `singleton_class` or `meta_class`).
+  * Deprecate `Kernel#object_send` (use `public_send`), `#instance_send` (use `__send__`).
+  * Deprecate `Kernel#load_relative` (use `require_relative`).
+  * Deprecate `Kernel#returning` (use `Kernel#tap`).
+  * Deprecate `Kernel#memo` (use `Module#memoize`; global `$MEMO` is problematic).
+  * Update `Kernel#meta_class` to delegate to `singleton_class` internally.
+  * Fix dead requires for removed `kernel/singleton_class` in Proc and Kernel.
+  * Remove misplaced `applique/file_helpers` from core (test infrastructure).
+  * Remove OpenStruct extensions now built into Ruby (`to_h`, `each`, `[]`, `[]=`).
+  * Fix OpenStruct#initialize to not use removed `new_ostruct_member`.
+  * Add OpenStruct#merge (non-destructive version).
+  * Remove deprecated OpenStruct methods (`instance_delegate`, `ostruct_update`, etc.).
+  * Deprecate `cloneable.rb` (use `deep_dup`/`deep_clone` instead).
+  * Deprecate `continuation.rb` (callcc is obsolete; use Fiber).
+  * Deprecate `getoptlong.rb` (bundled gem heading for removal; use OptionParser).
+  * Deprecate `load_monitor.rb` (monkey-patches require/load globally).
+  * Clean up `random.rb`: remove Array#shuffle/shuffle! (Ruby built-in),
+    add Array#sample! (destructive sample), deprecate at_rand/pick (use sample).
+  * Fix Pathname#glob to wrap Ruby's built-in, adding symbol flag support.
+  * Remove Pathname#empty? (built into Ruby).
+  * Deprecate Pathname.null (use Pathname.new(File::NULL)).
+  * Fix `Math.kldivergence` (was broken — referenced `self` instead of array parameter).
+  * Drop unused `test_files` directive from gemspec. (PR#301)
+
+
 ## 3.1.0 / 2016-05-10
 
 More or less a minor release, but there are some backward incompatabilites
