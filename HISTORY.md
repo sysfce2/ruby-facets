@@ -51,8 +51,12 @@ Changes:
   * Add `Range.intersection` and `Range#intersection` for finding the shared
     region of multiple ranges. Works with any comparable type.
   * Add `Kernel#functor` — block-less method chaining via Functor, replaces `tap` override.
-  * Rename `Hash#to_proc` to `Hash#setter` (avoids clash with Ruby 2.3's `Hash#to_proc`
-    which does key lookup; Facets' version does attribute assignment).
+  * Stop overriding `Hash#to_proc` and provide its behavior as `Hash#setter`
+    instead. Facets' version built a Proc that assigns the hash's key/value
+    pairs as attributes on a target object, which conflicted with Ruby's own
+    `Hash#to_proc` (added in 2.3, does key lookup). Facets now cedes `to_proc`
+    to Ruby; use `Hash#setter` for the attribute-assignment behavior. Also
+    renamed the option `response:` to `safe:` and fixed a receiver check.
   * Consolidate `Array#arrange` and `Array#to_ranges`; `to_ranges` is now primary,
     `arrange` and `rangify` are aliases. Now handles mixed ranges and values.
   * Fix `Array#step` to start at index 0 (was n-1); add optional offset parameter.
