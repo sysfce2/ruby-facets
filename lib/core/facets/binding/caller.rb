@@ -4,14 +4,18 @@ class Binding
 
   # Returns the call stack, same format as Kernel#caller()
   #
-  def caller( skip=0 )
-    eval("caller(#{skip})")
+  # Accepts the same `(start, length)` arguments as Kernel#caller.
+  #
+  def caller( start=0, length=nil )
+    length ? eval("caller(#{start}, #{length})") : eval("caller(#{start})")
   end
 
   # Returns the call stack, same format as Kernel#caller_locations()
   #
-  def caller_locations( skip=0 )
-    eval("caller_locations(#{skip})")
+  # Accepts the same `(start, length)` arguments as Kernel#caller_locations.
+  #
+  def caller_locations( start=0, length=nil )
+    length ? eval("caller_locations(#{start}, #{length})") : eval("caller_locations(#{start})")
   end
 
   # Return the line number on which the binding was created.

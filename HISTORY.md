@@ -14,6 +14,10 @@ Changes:
   * Restore `Range#overlap?` for Ruby < 3.3. It was dropped in 3.2.0 (since Ruby
     3.3 added a native one), which left 3.1/3.2 users without it. It is now
     defined only when missing, so it never replaces the built-in on 3.3+.
+  * Widen `Binding#caller` and `Binding#caller_locations` to accept the optional
+    `length` argument (matching `Kernel#caller`/`#caller_locations`). The
+    too-narrow arity raised `ArgumentError` when `warn(uplevel:)` dispatched to
+    them under JRuby's pure-Ruby `warn`.
 
 * Internal
 
