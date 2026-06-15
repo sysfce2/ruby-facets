@@ -21,7 +21,8 @@ class Range
   def self.intersection(*ranges)
     return nil if ranges.empty?
     ranges.reduce do |result, r|
-      return nil unless result.overlap?(r)
+      # Manual overlap test (Range#overlap? is Ruby 3.3+; Facets targets 3.1+).
+      return nil unless result.first <= r.last && r.first <= result.last
       new_first = result.first > r.first ? result.first : r.first
       new_last  = result.last  < r.last  ? result.last  : r.last
       new_first..new_last
